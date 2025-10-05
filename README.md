@@ -31,7 +31,8 @@ Utility to seal and unseal files using MacOS Secure Enclave. Inspired heavily by
 - `sepk_rep` is not a private key itself but rather an opaque handle that can be used by Secure Enclave to regenerate key.
     - You can't decrypt the file on the other Mac. Secure Enclave private keys are tied to their, well, Secure Enclave. That's a very poetic way to lose your data.
 - Access control rules of the key require that biometry or password authentication are provided to use the private key.
-- One might be tempted to say that the data is encrypted or decrypted **in** Secure Enclave. **It's not**. The data is encrypted using `syk` that is made accessible after some Secure Enclave magic. The `syk` and `shk` live in RAM for some period of time. Whether this period is brief or not, may they possibly get swapped or find themselves in coredump depends heavily on CryptoKit's implementation of SymmetricKey and SharedSecret classes. I dunno.
+- One might be tempted to say that the data is encrypted or decrypted **in** Secure Enclave. **It's not**. The nasty Secure Enclave keys can be used solely for signing or key agreement, not encryption. The data is encrypted using `syk` that is made accessible after some Secure Enclave magic. The `syk` and `shk` live in RAM for some period of time. Whether this period is brief or not, may they possibly get swapped or find themselves in a coredump depends heavily on CryptoKit's implementation of SymmetricKey and SharedSecret classes. I dunno.
+- There is more subtle issue with `epk`. It must be reliably destroyed after the encryption step or it can be used to recreate `shk` and `syk`. Storing it somewhere else is a funny way to backdoor your own encryption system.
 
 # Bugs
 
