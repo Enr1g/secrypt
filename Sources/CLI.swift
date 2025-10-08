@@ -9,21 +9,9 @@ struct SECrypt: ParsableCommand {
         abstract: "A utility to encrypt files with SE-backed keys.",
         version: "1.0.0",
         subcommands: [
-            // Encrypt.self, Decrypt.self, Generate.self, RegeneratePublicKey.self,
             Seal.self, Open.self,
         ],
     )
-}
-
-struct Options: ParsableArguments {
-    @Option(help: "Input file.")
-    var input: String
-
-    @Option(help: "Output file.")
-    var output: String
-
-    @Option(help: "Key file (.pub to encrypt, .key to decrypt).")
-    var keyFile: String
 }
 
 extension SECrypt {
